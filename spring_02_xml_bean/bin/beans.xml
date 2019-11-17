@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- bean就是java对象，由spring创建和管理 -->
+        <bean id="boyDao" class="spring_02_daoimpl.userBoyDaoImpl"/>
+        <bean id="girlDao" class="spring_02_daoimpl.userGirlDaoImpl"/>
+        <bean id="service" class="spring_02_serviceimpl.serviceImpl">
+        	<property name="userDao" ref="boyDao"></property>
+        </bean>
+        
+</beans>

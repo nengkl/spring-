@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <bean id="Xx1dao" class="top.neng.dao.daoImpl.Xx1DaoImpl">
+        <property name="jt" ref="jdbcTemplate"></property>
+    </bean>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg name="dataSource" ref="datasource"></constructor-arg>
+    </bean>
+    <bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/hahaha?useJDBCCompliantTimezoneShift=true&amp;serverTimezone=UTC"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="123123"></property>
+    </bean>
+    <bean id="XxService" class="top.neng.service.serviceImpl.XxServiceImpl">
+        <property name="xx1dao" ref="Xx1dao"></property>
+    </bean>
+    <bean id="TransacionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="datasource"></property>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="TransacionManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+            <tx:method name="find*" read-only="true" propagation="SUPPORTS"></tx:method>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="pt1" expression="execution(* top.neng.service.serviceImpl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt1"></aop:advisor>
+    </aop:config>
+</beans>

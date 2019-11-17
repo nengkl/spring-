@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id ="customerService" class="service.serviceImpl.customerServiceImpl">
+		<property name="customerDao" ref="customerDao"></property>
+	</bean>
+	<bean id="customerDao" class="dao.daoImpl.customerDaoImpl">
+		<property name="runner" ref="runner"></property>
+		<property name="customer" ref="customer"></property>
+	</bean>
+	<bean id="customer" class="entity.Customer"></bean>
+	<!-- 给dao配置QueryRunner -->
+	<bean id="runner" class="org.apache.commons.dbutils.QueryRunner">
+		<constructor-arg name="ds" ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- 给QueryRunner配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/hahaha?useUnicode=true&amp;characterEncoding=utf-8"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="123123"></property>
+		<property name="initialPoolSize" value="10"></property>
+		<property name="maxPoolSize" value="20"></property>
+		<property name="minPoolSize" value="5"></property>
+		<property name="acquireIncrement" value="5"></property>
+	</bean>
+	</beans>
